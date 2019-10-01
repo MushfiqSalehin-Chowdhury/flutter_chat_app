@@ -55,12 +55,13 @@ class LoginScreenState extends State<LoginScreen> {
     prefs = await SharedPreferences.getInstance();
 
     isLoggedIn = await googleSignIn.isSignedIn();
-    if (isLoggedIn) {
+ if (isLoggedIn) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MainScreen(currentUserId: prefs.getString('id'))),
       );
     }
+
 
     this.setState(() {
       isLoading = false;

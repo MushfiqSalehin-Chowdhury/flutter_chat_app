@@ -56,15 +56,18 @@ class MainScreenState extends State<MainScreen> {
       return;
     }, onResume: (Map<String, dynamic> message) {
       print('onResume: $message');
+      showNotification(message['notification']);
       return;
     }, onLaunch: (Map<String, dynamic> message) {
       print('onLaunch: $message');
+      showNotification(message['notification']);
       return;
     });
 
     firebaseMessaging.getToken().then((token) {
       print('token: $token');
       Firestore.instance.collection('users').document(currentUserId).updateData({'pushToken': token});
+      Fluttertoast.showToast(msg: token);
     }).catchError((err) {
       Fluttertoast.showToast(msg: err.message.toString());
     });
@@ -86,6 +89,8 @@ class MainScreenState extends State<MainScreen> {
   }
 
   void showNotification(message) async {
+    print("Chat: "+message);
+
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
       Platform.isAndroid ? 'com.dfa.flutterchatdemo': 'com.duytq.flutterchatdemo',
       'Flutter chat demo',
